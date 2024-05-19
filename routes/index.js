@@ -29,7 +29,7 @@ router.get('/', function(req, res, next) {
       image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSln7dDO_YfDP9C_QgCSw_h0kvHGFiWovY5UA&s'
     }
   ] // added dummmy product list
-  res.render('index', {products});
+  res.render('index', {products,admin: true});
 });
 
 module.exports = router;
