@@ -31,5 +31,8 @@ router.get('/', function(req, res, next) {
   ] // added dummmy product list
   res.render('admin/view-products',{admin: true,products})
 });
+router.get('/add-product', function(req, res,) {
+  res.render('admin/add-product');
+});
 
 module.exports = router;
