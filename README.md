@@ -1,2 +1,3 @@
 # Shopping-Cart
-E-Commerce Application using Node.js, Express and Mongo
+E-Commerce Application using Node.js, Express and MongoDB
+
