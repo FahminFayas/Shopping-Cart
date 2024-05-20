@@ -4,15 +4,15 @@ var productHelper = require('../config/helpers/product-helper');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  
-  res.render('admin/view-products',{admin: true,products})
-});
-router.get('/add-product', function(req, res,) {
   productHelper.getAllProducts().then((products)=>{
     console.log(products);
-    res.render('admin/add-product');
-    
+  res.render('admin/view-products',{admin: true,products})
+
   })
+  
+});
+router.get('/add-product', function(req, res,) {
+  res.render('admin/add-product');
 });
 router.post('/add-product', function(req, res) {
 
