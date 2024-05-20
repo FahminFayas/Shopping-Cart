@@ -5,5 +5,11 @@ module.exports = {
             console.log(data);
             callback(data.insertedId);
         });
+    },
+    getAllProducts: () => {
+        return new Promise(async (resolve, reject) => {
+            let products = await db.get().collection('product').find().toArray();
+            resolve(products);
+        });
     }
 }
