@@ -23,5 +23,10 @@ router.post('/signup',(req, res) => {
     console.log(response);
   })
 });
+router.post('/login',(req, res) => {
+  userHelper.doLogin(req.body).then((response)=>{
+    console.log(response);
+  })
+});
 
 module.exports = router;
