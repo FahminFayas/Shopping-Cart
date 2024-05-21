@@ -6,9 +6,10 @@ const userHelper = require('../config/helpers/user-helpers');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  let user = req.session.user;
+  console.log(user);
   productHelper.getAllProducts().then((products)=>{
-    console.log(products);
-  res.render('user/view-products',{admin: false,products})
+  res.render('user/view-products',{products,user})
 
   })
 });
@@ -27,6 +28,10 @@ router.post('/login',(req, res) => {
   userHelper.doLogin(req.body).then((response)=>{
     console.log(response);
   })
+});
+router.get('/logout',(req, res) => {
+  req.session.destroy();
+  res.redirect('/');
 });
 
 module.exports = router;
