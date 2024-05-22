@@ -35,5 +35,15 @@ router.get('/delete-product/:id', function(req, res) {
     res.redirect('/admin/');
   })
 });
+router.post('/edit-product/:id', function(req, res) {
+  let id = req.params.id;
+  productHelper.updateProduct(req.params.id, req.body).then(()=>{
+    res.redirect('/admin/');
+    if(req.files.Image){
+      let image = req.files.Image;
+      image.mv('./public/images/product-images/'+req.params.id+'.jpg');
+    }
+  });
+});
 
 module.exports = router;
