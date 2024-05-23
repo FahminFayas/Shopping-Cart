@@ -35,15 +35,24 @@ router.get('/delete-product/:id', function(req, res) {
     res.redirect('/admin/');
   })
 });
+
+
+router.get('/edit-product/:id', async function(req, res) {
+  let product = await productHelper.getProductDetails(req.params.id);
+  console.log(product);
+  res.render('admin/edit-product',{product});
+});
+
 router.post('/edit-product/:id', function(req, res) {
+  console.log(req.params.id);
   let id = req.params.id;
-  productHelper.updateProduct(req.params.id, req.body).then(()=>{
+  productHelper.updateProduct(req.params.id,req.body).then(()=>{
     res.redirect('/admin/');
     if(req.files.Image){
       let image = req.files.Image;
-      image.mv('./public/images/product-images/'+req.params.id+'.jpg');
+      image.mv('./public/images/product-images/'+id+'.jpg');
     }
   });
-});
+})
 
 module.exports = router;
