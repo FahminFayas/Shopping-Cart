@@ -65,9 +65,11 @@ router.get('/cart', verifyLogin, async(req, res) => {
   console.log(products);
   res.render('user/cart',{products,user:req.session.user});
 });
-router.get('/add-to-cart/:id', verifyLogin, (req, res) => {
+router.get('/add-to-cart/:id', (req, res) => {
+  console.log('api called')
   userHelper.addToCart(req.params.id, req.session.user._id).then(() => {
-    res.redirect('/');
+    //res.redirect('/');
+    res.json({status:true});
   });
 });
 
