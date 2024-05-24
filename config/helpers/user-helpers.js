@@ -90,23 +90,46 @@ module.exports = {
                     $match:{user:new objectId(userId)}
                 },
                 {
+                    $unwind:'$products'
+                },
+                {
+                    $project:{
+                        item:'$products.item',
+                        quantity:'$products.quantity'
+                    }
+                },
+                {
                     $lookup:{
                         from:collection.PRODUCT_COLLECTIONS,
-                        let:{prodList:'$products'},
-                        pipeline:[
-                            {
-                                $match:{
-                                    $expr:{
-                                        $in:['$_id','$$prodList']
-                                    }
-                                }
-                            }
-                        ],
-                        as:'cartItems'
+                        localField:'item',
+                        foreignField:'_id',
+                        as:'product'
+                    }
+                },
+                {
+                    $project:{
+                        item:1,quantity:1,product:{$arrayElemAt:['$product',0]}
                     }
                 }
+                // {
+                //     $lookup:{
+                //         from:collection.PRODUCT_COLLECTIONS,
+                //         let:{prodList:'$products'},
+                //         pipeline:[
+                //             {
+                //                 $match:{
+                //                     $expr:{
+                //                         $in:['$_id','$$prodList']
+                //                     }
+                //                 }
+                //             }
+                //         ],
+                //         as:'cartItems'
+                //     }
+                // }
             ]).toArray();
-            resolve(cartItems[0].cartItems);
+            console.log(cartItems);
+            resolve(cartItems);
             
         })
     },
@@ -118,6 +141,27 @@ module.exports = {
                 count = cart.products.length;
             }
             resolve(count);
+        });
+    },
+    changeProductQuantity: (details)=>{
+        details.count = parseInt(details.count);
+        details.quantity = parseInt(details.quantity);
+        return new Promise((resolve,reject)=>{
+            if(details.count==-1 && details.quantity==1){
+                db.get().collection(collection.CART_COLLECTION).updateOne({_id:new objectId(details.cart)},
+                {
+                    $pull:{products:{item:new objectId(details.product)}}
+                }).then((response)=>{
+                    resolve({removeProduct:true});
+                });
+            }else{
+                db.get().collection(collection.CART_COLLECTION).updateOne({_id:new objectId(details.cart),'products.item':new objectId(details.product)},
+                {
+                    $inc:{'products.$.quantity':details.count}
+                }).then((response)=>{
+                    resolve({status:true});
+                });
+            }
         });
     }
     
