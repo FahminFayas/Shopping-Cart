@@ -62,8 +62,9 @@ router.get('/logout', (req, res) => {
 });
 router.get('/cart', verifyLogin, async(req, res) => {
   let products = await userHelper.getCartProducts(req.session.user._id);
+  let total = await userHelper.getTotalAmount(req.session.user._id);
   console.log(products);
-  res.render('user/cart',{products,user:req.session.user});
+  res.render('user/cart',{products,total,user:req.session.user});
 });
 router.get('/add-to-cart/:id', (req, res) => {
   console.log('api called')
@@ -84,6 +85,10 @@ router.post('/remove-product',(req,res,next)=>{
   userHelper.removeProduct(req.body).then((response)=>{
     res.json(response);
   });
+});
+router.get('/place-order',verifyLogin,async(req,res)=>{
+  let total = await userHelper.getTotalAmount(req.session.user._id);
+  res.render('user/place-order',{total,user:req.session.user});
 });
 
 module.exports = router;

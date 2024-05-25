@@ -1,32 +1,45 @@
 <section>
-  <div class="container">
-    <table class="table mt-5">
-      <thead>
-        <tr>
-          <th scope="col">Item</th>
-          <th scope="col">Title</th>
-          <th scope="col">Price</th>
-          <th scope="col">Quantity</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each products}}
-        <tr>
-          <td><img style="width: 70px; height:70px;" src="/images/product-images/{{this.product._id}}.jpg" alt=""></td>
-          <td>{{this.product.Name}}</td>
-          <td>Rs. {{this.product.Price}}</td>
-          <td>
-            <button class="cart-Item-count mr-3" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',-1,'{{this.quantity}}')">-</button>
-            <span id="{{this.product._id}}">{{this.quantity}}</span>
-            <button class="cart-Item-count mr-3" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',1,'{{this.quantity}}')">+</button>
-          </td>
-          <td>
-            <button class="btn btn-danger" onclick="removeProduct('{{this._id}}','{{this.product._id}}')">Remove</button>
-          </td>
-        </tr>
-        {{/each}}
-      </tbody>
-    </table>
+  <div class="container mt-5">
+    <div class="card shadow">
+      <div class="card-body">
+        <h3 class="card-title text-center mb-4">Shopping Cart</h3>
+        <table class="table table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">Item</th>
+              <th scope="col">Title</th>
+              <th scope="col">Price</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each products}}
+            <tr>
+              <td><img style="width: 70px; height:70px;" src="/images/product-images/{{this.product._id}}.jpg" alt=""></td>
+              <td>{{this.product.Name}}</td>
+              <td>Rs. {{this.product.Price}}</td>
+              <td>
+                <div class="input-group">
+                  <button class="btn btn-outline-secondary" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',-1,'{{this.quantity}}')">-</button>
+                  <input type="text" class="form-control text-center" value="{{this.quantity}}" readonly>
+                  <button class="btn btn-outline-secondary" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',1,'{{this.quantity}}')">+</button>
+                </div>
+              </td>
+              <td>
+                <button class="btn btn-danger" onclick="removeProduct('{{this._id}}','{{this.product._id}}')">Remove</button>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        <hr>
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="mb-0">Total: Rs. {{total}}</h4>
+          <a href="/place-order" class="btn btn-primary">Order Now</a>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -47,7 +60,7 @@
     })
   }
 
-  function removeProduct(cartId, prodId){
+  function removeProduct(cartId, prodId) {
     $.ajax({
       url: '/remove-product',
       method: 'POST',
