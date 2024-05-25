@@ -208,15 +208,20 @@ module.exports = {
                         _id: null,
                         total: {
                             $sum: {
-                                $multiply: [{$toInt:"$quantity"}, {$toDouble: "$product.Price"}]
+                                $multiply: ["$quantity", {$toDouble:"$product.Price"}]
                             }
                         }
                     }
                 }
             
             ]).toArray();
-            console.log(total[0].total);
-            resolve(total[0].total);
+            if (total.length > 0) {
+                console.log(total[0].total);
+                resolve(total[0].total);
+            } else {
+                console.log('No documents found');
+                resolve(0);  // or reject an error, depending on your use case
+            }
             
         })
     }
