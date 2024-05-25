@@ -1,22 +1,53 @@
 <section>
-        <div class="container mt-5">
-            <div class="row">
-                {{#each products}}
-                <div class="col-md-3">
-                    <div class="card" style="width: 18rem;">
-                        <img src="/images/product-images/{{this._id}}.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">{{this.Name}}</h5>
-                            <p class="card-text">Rs. {{this.Price}}</p>
-                            <p class="card-text">{{this.Description}}</p>
-                            <button onclick="addToCart('{{this._id}}')" class="btn btn-primary">Add to Cart</button>
-                        </div>
+    <div class="container mt-5">
+        <div class="row">
+            {{#each products}}
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="/images/product-images/{{this._id}}.jpg" class="card-img-top" alt="{{this.Name}}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.Name}}</h5>
+                        <p class="card-text text-muted">Rs. {{this.Price}}</p>
+                        <p class="card-text">{{this.Description}}</p>
+                        <button onclick="addToCart('{{this._id}}')" class="btn btn-primary w-100">Add to Cart</button>
                     </div>
                 </div>
-                {{/each}}
             </div>
+            {{/each}}
         </div>
-    </section>
-    <script>
-        
-    </script>
+    </div>
+</section>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .card {
+        border-radius: 10px;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    .card-title {
+        font-weight: bold;
+    }
+    .card-text {
+        font-size: 0.9rem;
+    }
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+</style>
+
+<script>
+    function addToCart(productId) {
+        // Add to cart logic here
+    }
+</script>
