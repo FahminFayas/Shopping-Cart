@@ -74,9 +74,15 @@ router.get('/add-to-cart/:id', (req, res) => {
 });
 router.post('/change-product-quantity',(req,res,next)=>{
   console.log(req.body);
-  userHelper.changeProductQuantity(req.body).then(()=>{
-    res.redirect('/cart');
+  userHelper.changeProductQuantity(req.body).then((response)=>{
+    res.json(response);
   
+  });
+});
+router.post('/remove-product',(req,res,next)=>{
+  console.log(req.body);
+  userHelper.removeProduct(req.body).then((response)=>{
+    res.json(response);
   });
 });
 

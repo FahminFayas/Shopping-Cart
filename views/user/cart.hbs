@@ -5,6 +5,7 @@
         <tr>
           <th scope="col">Item</th>
           <th scope="col">Title</th>
+          <th scope="col">Price</th>
           <th scope="col">Quantity</th>
         </tr>
       </thead>
@@ -13,11 +14,14 @@
         <tr>
           <td><img style="width: 70px; height:70px;" src="/images/product-images/{{this.product._id}}.jpg" alt=""></td>
           <td>{{this.product.Name}}</td>
+          <td>Rs. {{this.product.Price}}</td>
           <td>
-            <button class="cart-Item-count mr-3" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',-1,'{{this.quantity}}')">-</button>{{this.quantity}}   <button class="cart-Item-count mr-3" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',1,'{{this.quantity}}')">+</button>
+            <button class="cart-Item-count mr-3" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',-1,'{{this.quantity}}')">-</button>
+            <span id="{{this.product._id}}">{{this.quantity}}</span>
+            <button class="cart-Item-count mr-3" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',1,'{{this.quantity}}')">+</button>
           </td>
           <td>
-            <a href="" class="btn btn-danger">Remove</a>
+            <button class="btn btn-danger" onclick="removeProduct('{{this._id}}','{{this.product._id}}')">Remove</button>
           </td>
         </tr>
         {{/each}}
@@ -36,6 +40,20 @@
         product: proId,
         count: count,
         quantity: quantity
+      },
+      success: function (response) {
+        location.reload()
+      }
+    })
+  }
+
+  function removeProduct(cartId, prodId){
+    $.ajax({
+      url: '/remove-product',
+      method: 'POST',
+      data: {
+        cart: cartId,
+        product: prodId
       },
       success: function (response) {
         location.reload()

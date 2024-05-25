@@ -163,6 +163,17 @@ module.exports = {
                 });
             }
         });
+    },
+    removeProduct: (details)=>{
+        return new Promise((resolve,reject)=>{
+            console.log('removeProduct')
+            db.get().collection(collection.CART_COLLECTION).updateOne({_id:new objectId(details.cart)},
+            {
+                $pull:{products:{item:new objectId(details.product)}}
+            }).then((response)=>{
+                resolve({removeProduct:true});
+            });
+        });
     }
     
 }
