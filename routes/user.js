@@ -138,7 +138,7 @@ router.post('/verify-payment',(req,res)=>{
     });
   }).catch((err)=>{
     console.log(err);
-    res.json({status:false,errMsg:''});
+    res.json({status:false,errMsg:'Payment failed! Try again!'});
   });
 });
 module.exports = router;
