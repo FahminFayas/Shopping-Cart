@@ -91,5 +91,30 @@ router.get('/place-order',verifyLogin,async(req,res)=>{
   let total = await userHelper.getTotalAmount(req.session.user._id);
   res.render('user/place-order',{total,user:req.session.user});
 });
-
+router.post('/place-order',async(req,res)=>{
+  let products = await userHelper.getCartProductList(req.body.userId);
+  let totalPrice = await userHelper.getTotalAmount(req.body.userId);
+  userHelper.placeOrder(req.body,products,totalPrice).then((response)=>{
+    res.json({status:true});
+  });
+});
+router.get('/order-success',(req,res)=>{
+  res.render('user/order-success',{user:req.session.user});
+});
+router.get('/orders',async(req,res)=>{
+  if (req.session.user) {
+    let orders = await userHelper.getUserOrders(req.session.user._id);
+    // rest of your code
+    console.log(orders);
+    res.render('user/orders',{user:req.session.user,orders});
+  } else {
+    // handle the case where the user is not logged in
+    // for example, redirect to the login page
+    res.redirect('/login');
+  }
+});
+router.get('/view-order-products/:id',async(req,res)=>{
+  let products = await userHelper.getOrderProducts(req.params.id);
+  res.render('user/view-order-products',{user:req.session.user,products});
+});
 module.exports = router;
