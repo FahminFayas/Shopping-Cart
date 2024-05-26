@@ -15,8 +15,9 @@
                                 <input type="text" class="form-control" id="pincode" name="pincode" required>
                             </div>
                             <div class="mb-3">
-                                <label for="phone" class="form-label">Phone</label>
-                                <input type="text" class="form-control" id="phone" name="phone" required>
+                                <label for="mobile" class="form-label">mobile</label>
+                                <input type="text" class="form-control" id="mobile" name="mobile" required>
+                                <input type="text" name="userId" value="{{user._id}}" hidden>
                             </div>
                             <div class="mb-3">
                                 <label for="total" class="form-label">Total</label>
@@ -25,12 +26,12 @@
                             <div class="mb-4">
                                 <label for="payment" class="form-label">Payment Method</label>
                                 <select class="form-control" id="payment" name="payment" required>
-                                    <option value="cash">Cash on Delivery</option>
-                                    <option value="card">Card</option>
+                                    <option name="paymentMethod" value="COD">COD</option>
+                                    <option name="paymentMethod" value="online">Online</option>
                                 </select>
                             </div>
                             <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">Place Order</button>
+                                <button type="submit" class="btn btn-primary">Checkout</button>
                             </div>
                         </form>
                     </div>
@@ -39,3 +40,22 @@
         </div>
     </div>
 </section>
+
+<script>
+    $('#checkout-form').submit(function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/place-order',
+            method: 'POST',
+            data: $('#checkout-form').serialize(),
+            success: function (response) {
+                if (response.status) {
+                    alert('Order placed successfully');
+                    location.href = '/order-success';
+                } else {
+                    alert('Order failed');
+                }
+            }
+        });
+    });
+</script>
