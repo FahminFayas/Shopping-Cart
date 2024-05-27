@@ -1,17 +1,49 @@
 var express = require('express');
 var router = express.Router();
 var productHelper = require('../config/helpers/product-helper');
+var adminHelper = require('../config/helpers/admin-helper');
+
+const verifyLogin = (req,res,next)=> {
+  if(req.session.admin){
+    next()
+  } else {
+    res.redirect('/admin/login')
+  }
+}
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/', verifyLogin, function(req, res, next) {
   productHelper.getAllProducts().then((products)=>{
-    console.log(products);
-  res.render('admin/view-products',{admin: true,products})
+  res.render('admin/view-products',{admin:true,products})
 
   })
   
 });
-router.get('/add-product', function(req, res,) {
+router.get('/login', (req, res) => {
+  if (req.session.admin) {
+    res.redirect('/');
+  } else {
+    res.render('admin/login',{adminLoginErr:req.session.adminLoginErr});
+    req.session.adminLoginErr = false;
+  }
+});
+router.post('/login', (req, res) => {
+  adminHelper.doLoginAdmin(req.body).then((response) => {
+    if (response.status) {
+      req.session.admin = response.admin;
+      req.session.admin.loggedIn = true;
+      res.redirect('/admin');
+    } else {
+      req.session.adminLoginErr = "are you sure you are an admin?";
+      res.redirect('/admin/login');
+    }
+  });
+});
+router.get('/logout', (req, res) => {
+  req.session.admin = null;
+  res.redirect('/admin/login');
+});
+router.get('/add-product',verifyLogin, function(req, res,) {
   res.render('admin/add-product');
 });
 router.post('/add-product', function(req, res) {
@@ -29,7 +61,7 @@ router.post('/add-product', function(req, res) {
     
   });
 });
-router.get('/delete-product/:id', function(req, res) {
+router.get('/delete-product/:id',verifyLogin, function(req, res) {
   let proId = req.params.id;
   productHelper.deleteProduct(proId).then((response)=>{
     res.redirect('/admin/');
@@ -37,7 +69,7 @@ router.get('/delete-product/:id', function(req, res) {
 });
 
 
-router.get('/edit-product/:id', async function(req, res) {
+router.get('/edit-product/:id',verifyLogin,  async function(req, res) {
   let product = await productHelper.getProductDetails(req.params.id);
   console.log(product);
   res.render('admin/edit-product',{product});
