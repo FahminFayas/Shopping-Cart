@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="col-md-6 m-auto">
+        <div class="container mt-5 pl-5">
+            <h2 class="text-center">Admin Login</h2>
+            <form action="/admin/login" method="post">
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp"
+                        placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-primary float-right">Login</button>
+                 {{#if adminLoginErr}}
+                <p class="error" style="color: red;">{{adminLoginErr}}</p>
+                {{/if}}
+            </form>
+        </div>
+    </div>
+</div>
