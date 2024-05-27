@@ -24,5 +24,17 @@ module.exports = {
                 resolve(response);
             }
         })
+    },
+    getAllOrders: () => {
+        return new Promise(async (resolve, reject) => {
+            let orders = await db.get().collection(collection.ORDER_COLLECTION).find().toArray();
+            resolve(orders);
+        })
+    },
+    getAllUsers: () => {
+        return new Promise(async (resolve, reject) => {
+            let users = await db.get().collection(collection.USER_COLLECTION).find().toArray();
+            resolve(users);
+        })
     }
 }

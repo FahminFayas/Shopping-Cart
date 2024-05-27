@@ -81,6 +81,24 @@ router.post('/edit-product/:id', function(req, res) {
       image.mv('./public/images/product-images/'+id+'.jpg');
     }
   });
-})
+});
+router.get('/orders', async(req,res)=>{
+  if(req.session.admin){
+    let order = await adminHelper.getAllOrders();
+    console.log(order);
+    res.render('admin/orders',{order,admin:req.session.admin});
+  } else {
+    res.redirect('/admin/login');
+  }
+});
+router.get('/users', async(req,res)=>{
+  if(req.session.admin){
+    let users = await adminHelper.getAllUsers();
+    console.log(users);
+    res.render('admin/users',{users,admin:req.session.admin});
+  } else {
+    res.redirect('/admin/login');
+  }
+});
 
 module.exports = router;

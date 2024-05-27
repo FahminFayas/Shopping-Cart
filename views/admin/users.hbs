@@ -1,0 +1,48 @@
+<div class="container mt-5">
+        <h2>All Users</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+                <!-- Users will be dynamically inserted here -->
+                {{#each users}}
+                <tr>
+                    <td>{{this.name}}</td>
+                    <td>{{this.email}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('/admin/users')
+                .then(response => response.json())
+                .then(users => {
+                    const userTableBody = document.getElementById('userTableBody');
+                    users.forEach(user => {
+                        const row = document.createElement('tr');
+                        const nameCell = document.createElement('td');
+                        const emailCell = document.createElement('td');
+                        
+                        nameCell.textContent = user.name;
+                        emailCell.textContent = user.email;
+                        
+                        row.appendChild(nameCell);
+                        row.appendChild(emailCell);
+                        
+                        userTableBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error fetching users:', error));
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
