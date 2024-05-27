@@ -1,7 +1,7 @@
 <section>
     <div class="container mt-5">
         <div class="table-responsive shadow-lg p-3 mb-5 bg-white rounded">
-            <table class="table table-hover table-striped align-middle">
+            <table class="table table-hover table-striped align-middle" id="allOrders">
                 <thead class="table-dark text-center">
                     <tr>
                         <th scope="col">Date</th>
@@ -100,3 +100,8 @@
         margin-top: 0.5rem;
     }
 </style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        $('#allOrders').DataTable();
+    });
+</script>
