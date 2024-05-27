@@ -122,7 +122,6 @@ router.get('/orders',async(req,res)=>{
   if (req.session.user) {
     let orders = await userHelper.getUserOrders(req.session.user._id);
     // rest of your code
-    console.log(orders);
     res.render('user/orders',{user:req.session.user,orders});
   } else {
     // handle the case where the user is not logged in
