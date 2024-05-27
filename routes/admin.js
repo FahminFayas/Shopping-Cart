@@ -39,12 +39,8 @@ router.post('/login', (req, res) => {
     }
   });
 });
-router.get('/logout', (req, res) => {
-  req.session.admin = null;
-  res.redirect('/admin/login');
-});
 router.get('/add-product',verifyLogin, function(req, res,) {
-  res.render('admin/add-product');
+  res.render('admin/add-product',{admin:true});
 });
 router.post('/add-product', function(req, res) {
 
@@ -72,7 +68,7 @@ router.get('/delete-product/:id',verifyLogin, function(req, res) {
 router.get('/edit-product/:id',verifyLogin,  async function(req, res) {
   let product = await productHelper.getProductDetails(req.params.id);
   console.log(product);
-  res.render('admin/edit-product',{product});
+  res.render('admin/edit-product',{admin:true,product});
 });
 
 router.post('/edit-product/:id', function(req, res) {
