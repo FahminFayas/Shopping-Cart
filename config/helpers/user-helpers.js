@@ -32,7 +32,7 @@ module.exports = {
             let loginStatus = false;
             let response = {};
             let user = await db.get().collection(collection.USER_COLLECTION).findOne({
-                Email: userData.Email
+                email: userData.email
             });
             if (user) {
                 bcrypt.compare(userData.password, user.password).then((status) => {
